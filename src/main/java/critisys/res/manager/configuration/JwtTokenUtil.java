@@ -11,8 +11,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+
+import java.lang.Exception;
 
 @Component
 public class JwtTokenUtil {
@@ -41,15 +45,20 @@ public class JwtTokenUtil {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails){
-        Claims claims = getAllClaimsFromToken(token);
+        try {
+            Claims claims = getAllClaimsFromToken(token);
 
-        String subject = claims.getSubject();
-        Date expDate = claims.getExpiration();
+            String subject = claims.getSubject();
+            Date expDate = claims.getExpiration();
 
-        return userDetails.getUsername().equals(subject) && (new Date()).before(expDate); 
+            return userDetails.getUsername().equals(subject) && (new Date()).before(expDate); 
+        }
+        catch(Exception e){
+            return false;
+        } 
     }
 
-    private Claims getAllClaimsFromToken(String token) {
+    public Claims getAllClaimsFromToken(String token) throws UnsupportedJwtException, JwtException, IllegalArgumentException{
         return Jwts
                 .parser()
                 .decryptWith(Keys.hmacShaKeyFor("random".getBytes()))
