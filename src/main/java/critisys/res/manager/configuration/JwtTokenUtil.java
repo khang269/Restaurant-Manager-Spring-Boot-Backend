@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,10 @@ import java.lang.Exception;
 @Component
 public class JwtTokenUtil {
     
+    // Get secret key from environment value
+    @Value("${HMAC_SHA256_SHARED_SECRET_KEY}")
+    private String secretKey;
+
     public String generateToken(UserDetails userDetails){
 
         List<String> scopes = new ArrayList<>();
@@ -33,14 +38,14 @@ public class JwtTokenUtil {
                             .subject(userDetails.getUsername())
                             .issuer("critisys.res.manager")
                             .issuedAt(new Date(System.currentTimeMillis()))
-                            .expiration(new Date(System.currentTimeMillis() + 3600*1000))
+                            .expiration(new Date(System.currentTimeMillis() + 3600*1000*1000))
                             .add("scopes", scopes)
                             .build();
 
         return Jwts
                     .builder()
                     .claims(claims)
-                    .signWith(Keys.hmacShaKeyFor("random".getBytes()), Jwts.SIG.HS256)
+                    .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()), Jwts.SIG.HS256)
                     .compact();
     }
 

@@ -1,12 +1,19 @@
 package critisys.res.manager.model;
 
 import java.util.Date;
+import java.util.List;
 
+import io.jsonwebtoken.lang.Arrays;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -37,6 +44,11 @@ public class ResUser {
     @Column
     @Temporal(TemporalType.DATE)
     private Date updatedDate = new Date();
+
+    @ElementCollection(targetClass = Role.class)
+    @CollectionTable(name = "ResRole", joinColumns = @JoinColumn(name = "ownerId"))
+    @Enumerated(EnumType.STRING)
+    private List<Role> roles = Arrays.asList(new Role[]{Role.VISITOR});
 
     public String getId() {
         return id;
@@ -85,6 +97,16 @@ public class ResUser {
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
     
-    
+    public enum Role {  
+        ADMIN, MANAGER, STORAGE, COUNTER, WAITER, VISITOR, CUSTOMER;
+    }
 }

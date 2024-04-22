@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userService.loadUserByUsername(userName);
                 if(jwtTokenUtil.validateToken(token, userDetails)){
                     // if token is valid
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), token, userDetails.getAuthorities());
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             } catch (IllegalArgumentException e) {
@@ -68,7 +68,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private void addDefaultSecurityContext(){
         UserDetails defaultDetails = userService.getDefaultUser();
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(defaultDetails.getUsername(), "", defaultDetails.getAuthorities());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(defaultDetails, "", defaultDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
     

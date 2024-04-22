@@ -17,30 +17,32 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 
 @RestController
+@RequestMapping("/api/menu")
 public class MenuController {
     
     @Autowired
     private MenuService menuService;
 
-    @GetMapping("/menu")
+    @GetMapping("/")
     public ResponseEntity<List<Menu>> all() {
         ResponseEntity entity = ResponseEntity.ok()
         .body(menuService.getAllMenu());
         return entity;
     }
 
-    @PostMapping("/menu/upsert")
+    @PostMapping("/upsert")
     public ResponseEntity upsert(@RequestBody Menu menu) {
         menu.setState(EntityState.ACTIVE);
         Menu savedMenu = menuService.upsertMenu(menu);
         return ResponseEntity.ok().body(savedMenu);
     }
     
-    @PostMapping("/menu/delete")
+    @PostMapping("/delete")
     public ResponseEntity delete(@RequestBody Menu menu) {
         try {
             Menu deleted  = menuService.deleteMenu(menu);

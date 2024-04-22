@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 
 @RestController
+@RequestMapping("/api/item")
 public class ItemController {
     
     @Autowired
@@ -45,25 +46,25 @@ public class ItemController {
     @Autowired
     private FileStorageService fileStorageService;
 
-    @GetMapping("/item")
+    @GetMapping("/")
     public ResponseEntity<List<MenuItem>> all() {
         ResponseEntity entity = ResponseEntity.ok().body(menuItemService.getAllMenuItem());
         return entity;
     }
 
-    @GetMapping("/item/active")
+    @GetMapping("/active")
     public ResponseEntity<List<MenuItem>> getActiveItemByMenuId(@RequestParam String menuId) {
         ResponseEntity entity = ResponseEntity.ok().body(menuItemService.getAllActiveItemByMenuId(menuId));
         return entity;
     }
     
-    @GetMapping("/item/deleted")
+    @GetMapping("/deleted")
     public ResponseEntity<List<MenuItem>> getDeletedItemByMenuId(@RequestParam String menuId) {
         ResponseEntity entity = ResponseEntity.ok().body(menuItemService.getAllDeletedItemByMenuId(menuId));
         return entity;
     }
 
-    @PostMapping("/item/upsert")
+    @PostMapping("/upsert")
     public ResponseEntity upsertMenuItem(@RequestBody MenuItem item) {
         item.setState(EntityState.ACTIVE);
         try{
@@ -93,7 +94,7 @@ public class ItemController {
     //     }
     // }
 
-    @RequestMapping(value = "/item/upload", 
+    @RequestMapping(value = "/upload", 
                 consumes = MediaType.MULTIPART_FORM_DATA_VALUE, 
                 produces = MediaType.APPLICATION_JSON_VALUE,
                 method = {RequestMethod.POST})

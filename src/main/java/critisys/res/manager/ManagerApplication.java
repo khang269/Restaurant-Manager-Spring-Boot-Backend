@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * 	https://spring.academy/courses/spring-boot
  * 	https://www.tutorialspoint.com/spring_boot/index.htm
  * 	https://kungfutech.edu.vn/bai-viet/spring-boot
+ * 	https://en.wikibooks.org/wiki/Java_Persistence
  * rest api:
  * 	https://www.baeldung.com/sprint-boot-multipart-requests
  * role-base access : 
@@ -17,6 +18,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * 	https://www.baeldung.com/role-and-privilege-for-spring-security-registration
  * 	https://dev.to/alphaaman/building-a-role-based-access-control-system-with-jwt-in-spring-boot-a7l	
  * 	https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter	
+ * 	https://www.baeldung.com/spring-deprecated-websecurityconfigureradapter
  */
 
 @SpringBootApplication
